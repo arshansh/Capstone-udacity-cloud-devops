@@ -71,10 +71,7 @@ jobs:
             if $(eksctl get cluster --name my-kubernetes-cluster); then
               echo "cluster already exists"
             else
-              eksctl create cluster \
-              --name my-kubernetes-cluster \
-              --region us-west-2 \
-              --nodegroup-name linux-nodes --node-type t2.micro --nodes 2   
+              eksctl create cluster --name my-kubernetes-cluster --region us-west-2 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2   
             fi
 workflows:
   default:
