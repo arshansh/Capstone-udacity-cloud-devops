@@ -95,7 +95,8 @@ jobs:
                 echo "new deployment created"               
               else
                 echo "deployment already exists"
-                CONTAINER_NAME=$(kubectl get pods mymachinelearningapp-67f9dc5fc5-8mjm5 -o jsonpath='{.spec.containers[*].name}')
+                POD_NAME=$(kubectl get pod -l app=mymachinelearningapp -o jsonpath="{.items[0].metadata.name}")
+                CONTAINER_NAME=$(kubectl get pods $POD_NAME -o jsonpath='{.spec.containers[*].name}')
                 kubectl set image deployment/mymachinelearningapp $CONTAINER_NAME=$DOCKER_USER/my_machine_learning_app:$TAG
                 kubectl rollout status deployment/mymachinelearningapp 
               fi
