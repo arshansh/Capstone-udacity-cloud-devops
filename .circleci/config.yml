@@ -61,8 +61,18 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run:
+          command: |
+            CLUSTER_EXIST = eksctl get cluster --name my-kubernetes-cluster
+            ECHO $CLUSTER_EXIST
+            if [[ $CLUSTER_EXIST -z ]]
+            then
+              eksctl create cluster \
+              --name my-kubernetes-cluster \
+              --region us-west-2 \
+              --nodegroup-name linux-nodes --node-type t2.micro --nodes 2                      
+            fi  
 
-        
 workflows:
   default:
     jobs:
