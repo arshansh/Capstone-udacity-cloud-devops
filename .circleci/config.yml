@@ -70,5 +70,4 @@ jobs:
 workflows:
   default:
     jobs:
-      - set_up_kubernetes_infra:
-          requires: [build-push-docker-image]          
+      - set_up_kubernetes_infra        
