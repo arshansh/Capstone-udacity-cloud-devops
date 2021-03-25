@@ -69,6 +69,7 @@ jobs:
       - run:
           command: 
             if $(eksctl get cluster --name my-kubernetes-cluster); then
+              echo "cluster already exists"
             else
               eksctl create cluster \
               --name my-kubernetes-cluster \
