@@ -63,7 +63,7 @@ jobs:
       - checkout
       - run:
           command: |
-            CLUSTER_EXIST = eksctl get cluster --name my-kubernetes-cluster
+            CLUSTER_EXIST=eksctl get cluster --name my-kubernetes-cluster
             ECHO $CLUSTER_EXIST
             if [[ $CLUSTER_EXIST -z ]]
             then
