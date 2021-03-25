@@ -95,7 +95,7 @@ jobs:
                 echo "new deployment created"               
               else
                 echo "deployment already exists"
-                kubectl set image deployment/mymachinelearningapp my_machine_learning_app=$DOCKER_USER/my_machine_learning_app:$TAG --record
+                kubectl set image deployment/mymachinelearningapp $DOCKER_USER/my_machine_learning_app:$TAG --record
                 kubectl rollout status deployment/mymachinelearningapp 
               fi
 workflows:
