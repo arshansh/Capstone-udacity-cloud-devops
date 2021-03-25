@@ -55,14 +55,12 @@ jobs:
               docker images      
               docker push $DOCKER_USER/my_machine_learning_app:$TAG
   
-    set_up_kubernetes_infra:
-      docker:
-        - image: amazon/aws-cli:2.0.6
-      working_directory: ~/repo
-      steps:
-        - checkout
-        - run:
-            command: 
+  set_up_kubernetes_infra:
+    docker:
+      - image: amazon/aws-cli:2.0.6
+    working_directory: ~/repo
+    steps:
+      - checkout
 
         
 workflows:
