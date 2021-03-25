@@ -89,15 +89,14 @@ jobs:
       - run:
           name: deploy app 
           command: |
+              TAG=0.1.$CIRCLE_BUILD_NUM
               if kubectl create deployment mymachinelearningapp --image=$DOCKER_USER/my_machine_learning_app:$TAG
               then
-                echo "deployment already exists"
-                TAG=0.1.$CIRCLE_BUILD_NUM
-                kubectl set image deployment/mymachinelearningapp my_machine_learning_app=$DOCKER_USER/my_machine_learning_app:$TAG --record
-                kubectl rollout status deployment/mymachinelearningapp                
+                echo "new deployment created"               
               else
-                echo "creating a new deployment"
-                kubectl create deployment mymachinelearningapp --image=$DOCKER_USER/my_machine_learning_app:$TAG  
+                echo "deployment already exists"
+                kubectl set image deployment/mymachinelearningapp my_machine_learning_app=$DOCKER_USER/my_machine_learning_app:$TAG --record
+                kubectl rollout status deployment/mymachinelearningapp 
               fi
 workflows:
   default:
