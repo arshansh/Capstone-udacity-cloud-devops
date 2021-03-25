@@ -11,6 +11,11 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+    run:
+      command: |
+        ls
+        chmod +x run_docker.sh
+        ./run_docker.sh
                                                     
 workflows:
   default:
