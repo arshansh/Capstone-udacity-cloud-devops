@@ -62,18 +62,30 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install eksctk 
           command: |
             yum install -y tar gzip
             curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
             mv /tmp/eksctl /usr/local/bin
       - run:
+          name: install kubectl 
+          command: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl
+            ./kubectl           
+      - run:
+          name: create kubernetes cluster
           command: |
             if eksctl get cluster --name my-kubernetes-cluster
             then
               echo "cluster already exists"
+              aws eks --region us-west-2 update-kubeconfig --name my-kubernetes-cluster
             else
+              echo "creating a new cluster"
               eksctl create cluster --name my-kubernetes-cluster --region us-west-2 --nodegroup-name linux-nodes --node-type t2.micro --nodes 2   
             fi
+
+            kubectl get nodes
 workflows:
   default:
     jobs:
