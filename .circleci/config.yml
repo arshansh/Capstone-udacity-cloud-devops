@@ -70,8 +70,5 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-lint-CI      
-      - build-push-docker-image:
-          requires: [build-lint-CI]
       - set_up_kubernetes_infra:
           requires: [build-push-docker-image]          
