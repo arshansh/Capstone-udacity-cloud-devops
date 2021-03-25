@@ -63,8 +63,12 @@ jobs:
       - checkout
       - run:
           command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+      - run:
+          command: |
             eksctl
-            CLUSTER_EXIST=eksctl get cluster --name my-kubernetes-cluster
+            CLUSTER_EXIST=$(eksctl get cluster --name my-kubernetes-cluster)
             ECHO $CLUSTER_EXIST
 
 workflows:
