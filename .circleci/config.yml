@@ -89,10 +89,21 @@ jobs:
       - run:
           name: deploy app 
           command: |
-              TAG=0.1.$CIRCLE_BUILD_NUM
-              kubectl set image deployment/mymachinelearningapp my_machine_learning_app=$DOCKER_USER/my_machine_learning_app:$TAG --record
-              kubectl rollout status deployment/mymachinelearningapp
+              if kubectl create deployment mymachinelearningapp --image=$DOCKER_USER/my_machine_learning_app:$TAG
+              then
+                echo "deployment already exists"
+                TAG=0.1.$CIRCLE_BUILD_NUM
+                kubectl set image deployment/mymachinelearningapp my_machine_learning_app=$DOCKER_USER/my_machine_learning_app:$TAG --record
+                kubectl rollout status deployment/mymachinelearningapp                
+              else
+                echo "creating a new deployment"
+                kubectl create deployment mymachinelearningapp --image=$DOCKER_USER/my_machine_learning_app:$TAG  
+              fi
 workflows:
   default:
     jobs:
-      - set_up_kubernetes_infra        
+      - build-lint-CI      
+      - build-push-docker-image:
+          requires: [build-lint-CI]
+      - set_up_kubernetes_infra:
+          requires: [build-push-docker-image]      
