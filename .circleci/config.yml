@@ -68,9 +68,7 @@ jobs:
             mv /tmp/eksctl /usr/local/bin
       - run:
           command: |
-            eksctl
             CLUSTER_EXIST=$(eksctl get cluster --name my-kubernetes-cluster)
-            ECHO $CLUSTER_EXIST
 
 workflows:
   default:
