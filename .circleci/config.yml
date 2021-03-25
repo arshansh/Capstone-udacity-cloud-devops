@@ -48,11 +48,13 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-    run:
-      command: |
-        docker build -t my_machine_learning_app .
-
-        docker images
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true      
+      - run:
+          command: |
+            docker build -t my_machine_learning_app .
+            docker images
                                                     
 workflows:
   default:
