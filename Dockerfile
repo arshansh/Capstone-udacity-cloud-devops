@@ -13,7 +13,7 @@ COPY . /app
 # Install packages from requirements.txt
 RUN python3 -m venv ~/.devops
 
-# hadolint ignore=DL3013, SC1090
+
 RUN . ~/.devops/bin/activate 
 RUN make install
 
