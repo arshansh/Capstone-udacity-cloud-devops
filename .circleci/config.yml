@@ -8,9 +8,7 @@ jobs:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
-    
     working_directory: ~/repo
-    
     steps:
       - checkout
     
@@ -20,7 +18,6 @@ jobs:
             - v1-dependencies-{{ checksum "requirements.txt" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-    
       - run:
           name: install dependencies
           command: |
@@ -41,7 +38,7 @@ jobs:
             . venv/bin/activate
             make lint 
 
-  build-docker-image:
+  build-push-docker-image:
     docker:
       # Use the same Docker base as the project
       - image: circleci/golang:1.15
@@ -52,11 +49,25 @@ jobs:
           version: 19.03.13
       - run:
           command: |
-            docker build -t my_machine_learning_app .
-            docker images
-                                                    
+              echo $DOCKER_PWD | docker login -u $DOCKER_USER --password-stdin
+              TAG=0.1.$CIRCLE_BUILD_NUM
+              docker build -t $DOCKER_USER/my_machine_learning_app:$TAG .
+              docker images      
+              docker push $DOCKER_USER/my_machine_learning_app:$TAG
+  
+    set_up_kubernetes_infra:
+      docker:
+        - image: amazon/aws-cli:2.0.6
+      working_directory: ~/repo
+      steps:
+        - checkout
+        - run:
+            command: 
+
+        
 workflows:
   default:
     jobs:
       - build-lint-CI      
-      - build-docker-image
+      - build-push-docker-image:
+          requires: [build-lint-CI]
