@@ -44,7 +44,7 @@ jobs:
   build-docker-image:
     docker:
       # Use the same Docker base as the project
-      - image: python:3.7.3-stretch
+      - image: circleci/golang:1.15
     working_directory: ~/repo
     steps:
       - checkout
